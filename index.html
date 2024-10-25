@@ -1,25 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QR Code Student Attendance</title>
-  <!-- Include the html5-qrcode library -->
-  <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
-  <style>
-    #qr-reader {
-      width: 300px;
-      margin: auto;
-      padding-top: 20px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Student Attendance Tracker</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>QR Code Student Attendance Tracker</h1>
-  <div id="qr-reader"></div>
-  <div id="qr-reader-results"></div>
+    <div class="container">
+        <h1>QR Code Student Attendance Tracker</h1>
+        <p>Scan the student's QR code to mark attendance.</p>
+        <div id="qr-reader" style="width:500px;"></div>
+        <div id="qr-reader-results"></div>
+        <h2>Present Students</h2>
+        <ul id="present-students-list"></ul>
+    </div>
 
-  <!-- Include your own script after the library -->
-  <script src="script.js"></script>
+    <!-- Include the QR code scanner library -->
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
