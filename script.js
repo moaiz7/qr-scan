@@ -1,32 +1,31 @@
-// Initialize the QR code scanner
-function onScanSuccess(decodedText, decodedResult) {
-    // Handle on success condition with the decoded text or result.
-    console.log(`Code matched = ${decodedText}`, decodedResult);
+window.onload = function() {
+    const qrReader = new Html5Qrcode("qr-reader");
 
-    // Display the scanned result
-    const presentStudentsList = document.getElementById('present-students-list');
-    const listItem = document.createElement('li');
-    listItem.innerText = decodedText;
-    presentStudentsList.appendChild(listItem);
-}
+    function onScanSuccess(qrCodeMessage) {
+        // Handle the scanned code as you like
+        console.log("QR Code Scanned: ", qrCodeMessage);
 
-function onScanFailure(error) {
-    // Handle scan failure, typically better to ignore and keep scanning.
-    console.warn(`QR Code scan error = ${error}`);
-}
+        // Add the student's name or code to the present students list
+        const presentStudentsList = document.getElementById("present-students-list");
+        const listItem = document.createElement("li");
+        listItem.textContent = qrCodeMessage;
+        presentStudentsList.appendChild(listItem);
+    }
 
-let html5QrCode = new Html5Qrcode("qr-reader");
+    function onScanFailure(error) {
+        // Handle scan failure, maybe show a message or do nothing
+        console.warn(`QR Code Scan failed: ${error}`);
+    }
 
-// Start scanning when the page loads
-html5QrCode.start(
-    { facingMode: "environment" }, // Use rear camera if available
-    {
-        fps: 10,    // Frames per second to scan
-        qrbox: 250  // Size of the scanning box (in pixels)
-    },
-    onScanSuccess,
-    onScanFailure
-).catch((err) => {
-    // Start failed, handle it
-    console.error(`Unable to start the QR code scanner. Error: ${err}`);
-});
+    qrReader.start(
+        { facingMode: "environment" }, // Use back camera
+        {
+            fps: 10, // Scans per second
+            qrbox: 250 // QR code scanning box size
+        },
+        onScanSuccess,
+        onScanFailure
+    ).catch((err) => {
+        console.error(`Unable to start scanning: ${err}`);
+    });
+};
