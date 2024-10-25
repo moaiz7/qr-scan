@@ -1,48 +1,21 @@
-// Load the html5-qrcode library and set up the QR code scanner
-window.addEventListener('load', function() {
-    const presentStudentsList = document.getElementById('presentStudents');
-    const scanningStatus = document.getElementById('scanning-status');
+function onScanSuccess(decodedText, decodedResult) {
+  // Handle the scanned result here
+  document.getElementById('qr-reader-results').innerText = `Scanned: ${decodedText}`;
+}
 
-    // Function to add student to the attendance list
-    function markAttendance(studentName) {
-        let li = document.createElement('li');
-        li.textContent = studentName;
-        presentStudentsList.appendChild(li);
-    }
+function onScanFailure(error) {
+  // Handle scan failure
+  console.warn(`QR code scan failed: ${error}`);
+}
 
-    // Initialize the QR code reader
-    const html5QrCode = new Html5Qrcode("qr-reader");
-
-    // Function to handle QR code scan
-    function onScanSuccess(decodedText, decodedResult) {
-        scanningStatus.textContent = `QR Code Scanned: ${decodedText}`;
-        
-        // Mark the student as present
-        markAttendance(decodedText);
-
-        // Optionally, stop the scanner after successful scan
-        html5QrCode.stop().then((ignore) => {
-            scanningStatus.textContent = "QR Code scanning stopped.";
-        }).catch((err) => {
-            scanningStatus.textContent = `Error stopping scanner: ${err}`;
-        });
-    }
-
-    // Function to handle scan error
-    function onScanError(errorMessage) {
-        scanningStatus.textContent = `Error: ${errorMessage}`;
-    }
-
-    // Start scanning for QR codes using the webcam
-    html5QrCode.start(
-        { facingMode: "environment" }, // Use back camera if available
-        {
-            fps: 10,    // 10 frames per second
-            qrbox: 250  // Set scanning box to 250px width
-        },
-        onScanSuccess,
-        onScanError
-    ).catch(err => {
-        scanningStatus.textContent = `Unable to start scanning: ${err}`;
-    });
-});
+// Initialize the QR code scanner
+let qrCodeScanner = new Html5Qrcode("qr-reader");
+qrCodeScanner.start(
+  { facingMode: "environment" }, // Use the back camera
+  {
+    fps: 10, // Frames per second
+    qrbox: { width: 250, height: 250 } // Scanner box size
+  },
+  onScanSuccess,
+  onScanFailure
+);
